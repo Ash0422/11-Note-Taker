@@ -72,7 +72,7 @@ Pull requests are welcome, please open an issue first to discuss what you would 
 ## Tests
 This application has been tested by the creator and it works fine.<br>
 this application has been uploaded to github: https://github.com/Ash0422/11-Note-Taker <br>
-this application has been deployed to Heroku: 
+this application has been deployed to Heroku: https://note-taker-app1.herokuapp.com/
 
 ## Credits
 
