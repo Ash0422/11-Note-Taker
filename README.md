@@ -70,7 +70,9 @@ THEN I am presented with empty fields to enter a new note title and the note’s
 Pull requests are welcome, please open an issue first to discuss what you would like to change. thank you
 
 ## Tests
-This application has been tested by the creator and it works fine.
+This application has been tested by the creator and it works fine.<br>
+this application has been uploaded to github: https://github.com/Ash0422/11-Note-Taker <br>
+this application has been deployed to Heroku: 
 
 ## Credits
 

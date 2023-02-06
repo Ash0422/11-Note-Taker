@@ -1,84 +1,70 @@
-// Requires
+// Import Required Modules
 const express = require('express');
-const { urlencoded } = require('body-parser');
 const path = require("path");
 const fs = require('fs');
 
-// Database
-let db = require('./db/db.json');
+// Set Up Database
+let notesDB = require('./db/db.json');
+// Set Port
 
-// Port
 const PORT = process.env.PORT || 3000;
-
-// Create server / Activate Express
+// Create Express Server
 const app = express();
 
-// Middleware
+// Use Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // For everything is running in the frontend, use this folder
 app.use(express.static(__dirname + '/public')); 
-
-
-// HTML Routes
+// Define HTML Routes
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
 });
-
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, './public/notes.html'));
 });
 
-
-// API Routes
+// Define API Routes
 app.get(`/api/notes`, (req, res) => {
-    // Read the `db.json` file and return all saved notes as JSON
-    res.json(db);
+    res.json(notesDB);
 });
 
 app.post('/api/notes', (req, res) => {
-    
-    // Receive a new note to save on the request body
-    let newNote = req.body;
-
-    // Add it to the `db.json` file
-    db.push(newNote);
-    fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(db), (err) => {
+    // Add new note to database
+    let nNote = req.body;
+    // Add it to the `notesDB.json` file
+    notesDB.push(nNote);
+    fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(notesDB), (err) => {
         if (err) {
             throw err;
         }
     });
-
-    // Return the new note to the client
-    res.json(db);
+    // Return updated note list
+    res.json(notesDB);
 });
-
+// Add DELETE Route
 app.delete(`/api/notes/:id`, (req, res) => {
-
-    // Receive the id as a query parameter
+    // Delete note by id
     let id = req.params.id;
-
     // Remove the note with the given `id`
-    for (var i = 0; i < db.length; i++) {
-        if (id === db[i].id) {
-            db = db.filter((note) => {
+    for (var i = 0; i < notesDB.length; i++) {
+        if (id === notesDB[i].id) {
+            notesDB = notesDB.filter((note) => {
                 return note.id != id;
             });
-
-            // Rewrite the notes to the `db.json` file
-            fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(db), (err) => {
+            // Rewrite the notes to the `notesDB.json` file
+            fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(notesDB), (err) => {
                 if (err) {
                     throw err;
                 }
             });
-            return res.json(db);
+            return res.json(notesDB);
         }
     }
     return res.json(false);
 });
 
-
-// Listener
+// Start Server Listener
 app.listen(PORT, () => {
     console.log(`Listening at ${PORT}`);
 });
